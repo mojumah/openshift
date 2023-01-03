@@ -4,9 +4,58 @@ Parameters:
     Type: "AWS::EC2::KeyPair::KeyName"
 
 Resources:
+
+  myVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/24
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      Tags:
+        - Key: Name
+          Value: Amalia VPC
+
+  myInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: My Internet Gateway
+
+  VPCGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      InternetGatewayId: 
+        Ref: myInternetGateway
+      VpcId: 
+        Ref: myVPC
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVPC
+      CidrBlock: 10.0.0.0/25
+      AvailabilityZone: "eu-west-2"
+      Tags:
+      - Key: Name
+        Value: Amalia public subnet
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVPC
+      CidrBlock: 10.0.0.128/25
+      AvailabilityZone: "eu-west-2"
+      Tags:
+      - Key: Name
+        Value: Amalia private subnet
+
   Ec2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType: t2.small
+      AvailabilityZone: "eu-west-2"
       ImageId: ami-0b5eea76982371e91
       KeyName: !Ref myKeyPair
