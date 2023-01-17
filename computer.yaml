@@ -22,6 +22,25 @@ Resources:
         - Key: Name
           Value: My Internet Gateway
 
+  myRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVPC
+      Tags:
+      - Key: Name
+        Value: my Route Table
+  
+  myRoute:
+    Type: AWS::EC2::Route
+    DependsOn: myInternetGateway
+    Properties:
+      RouteTableId:
+        Ref: myRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: myInternetGateway
+  
   VPCGatewayAttachment:
     Type: 'AWS::EC2::VPCGatewayAttachment'
     Properties:
@@ -51,6 +70,14 @@ Resources:
       Tags:
       - Key: Name
         Value: Amalia private subnet
+
+  theSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: 
+        Ref: myRouteTable
+      SubnetId: 
+        Ref: PublicSubnet
 
   Ec2Instance:
     Type: 'AWS::EC2::Instance'
