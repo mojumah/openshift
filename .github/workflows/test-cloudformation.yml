@@ -23,7 +23,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: arn:aws:iam::423261455848:role/amalia_jumah
           aws-region: eu-west-2
