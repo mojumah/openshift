@@ -10,16 +10,20 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  # This workflow contains a single job called "test"
   test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # install aws cli
       - name: Install the AWS CLI
         uses: unfor19/install-aws-cli-action@master
+
+      # checkout out repo
+      - name: checkout repo
+        uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
       - name: Configure AWS CLI Access Key and Secret Access Key
@@ -28,5 +32,6 @@ jobs:
               AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS }}
               AWS_DEFAULT_REGION: 'eu-west-2'
         run:
+              pwd
               aws cloudformation create-stack --stack-name myamalia --template-body file://computer.yaml --parameters ParameterKey=myKeyPair,ParameterValue=key.pem
 
