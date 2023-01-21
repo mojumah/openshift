@@ -92,6 +92,7 @@ Resources:
         Fn::Base64:
           !Sub |
             #!/bin/bash
+            # Install the Docker Engine Container Runtime 
             sudo apt-get update
             sudo apt-get install ca-certificates curl gnupg lsb-release 
             sudo mkdir -p /etc/apt/keyrings

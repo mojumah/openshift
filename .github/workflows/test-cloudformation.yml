@@ -32,5 +32,5 @@ jobs:
               AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS }}
               AWS_DEFAULT_REGION: 'eu-west-2'
         run:
-              aws cloudformation create-stack --stack-name myamalia --template-body file://computer.yaml --parameters ParameterKey=myKeyPair,ParameterValue=key.pem
+              aws cloudformation create-stack --stack-name myamalia --template-body file://computer.yaml --parameters ParameterKey=myKeyPair,ParameterValue=key
 
