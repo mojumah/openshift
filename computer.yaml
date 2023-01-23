@@ -96,11 +96,19 @@ Resources:
           ToPort: 22
           CidrIp: 0.0.0.0/0
 
+  ElasticIP:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: VPC
+      InstanceId: !Ref Ec2Instance
+
 
 Outputs:
   SecurityGroupId:
     Description: Security Group Id 
     Value: !GetAtt InstanceSecurityGroup.GroupId 
+    Export:
+      Name: !Sub "${AWS::StackName}-SecurityGroupIds"
   
 #  Ec2Instance:
 #    Type: 'AWS::EC2::Instance'
