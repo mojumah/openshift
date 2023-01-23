@@ -95,15 +95,15 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
-          
+
 
   Ec2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType: t2.small
       AvailabilityZone: "eu-west-2a"
-      SecurityGroups: 
-        - !Ref InstanceSecurityGroup 
+#      SecurityGroups: 
+#        - !Ref InstanceSecurityGroup 
       ImageId: ami-084e8c05825742534
       KeyName: !Ref myKeyPair
       SubnetId:
