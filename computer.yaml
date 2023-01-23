@@ -97,10 +97,10 @@ Resources:
           CidrIp: 0.0.0.0/0
 
 
-  Outputs:
-    SecurityGroupId:
-      Description: Security Group Id 
-      Value: !GetAtt InstanceSecurityGroup.GroupId 
+Outputs:
+  SecurityGroupId:
+    Description: Security Group Id 
+    Value: !GetAtt InstanceSecurityGroup.GroupId 
   
 #  Ec2Instance:
 #    Type: 'AWS::EC2::Instance'
