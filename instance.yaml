@@ -10,12 +10,14 @@ Resources:
     Properties:
       InstanceType: t2.small
       SecurityGroupIds:
-        - Fn::ImportValue: !Sub myamalia-SecurityGroupIds
+        - Fn::ImportValue: !Sub virtual-network-SecurityGroupIds
           
       AvailabilityZone: "eu-west-2a" 
       ImageId: ami-084e8c05825742534
       KeyName: !Ref myKeyPair
-      SubnetId: subnet-0c78ac5f81ffeb051
+  #    SubnetId: subnet-0c78ac5f81ffeb051
+      SubnetId: 
+        - Fn::ImportValue: !Sub virtual-network-SubnetId
 #        Ref: "PublicSubnet"
       UserData:
         Fn::Base64:
