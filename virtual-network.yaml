@@ -102,6 +102,7 @@ Outputs:
     Value: !GetAtt InstanceSecurityGroup.GroupId 
     Export:
       Name: !Sub "${AWS::StackName}-SecurityGroupIds"
+Outputs:
   SubnetId:
     Description: The Public Subnet VpcId
     Vaule: !GetAtt PublicSubnet.SubnetId
