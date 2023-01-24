@@ -33,4 +33,4 @@ jobs:
               AWS_DEFAULT_REGION: 'eu-west-2'
         run:
               aws cloudformation create-stack --stack-name virtual-network --template-body file://virtual-network.yaml
-              aws cloudformation create-stack --stack-name instance --template-body file://instance.yaml --parameters ParameterKey=myKeyPair,ParameterValue=shrimp-computer-key
+#              aws cloudformation create-stack --stack-name instance --template-body file://instance.yaml --parameters ParameterKey=myKeyPair,ParameterValue=shrimp-computer-key
