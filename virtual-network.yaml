@@ -1,0 +1,132 @@
+Parameters: 
+  myKeyPair: 
+    Description: Amazon EC2 Key Pair
+    Type: "AWS::EC2::KeyPair::KeyName"
+
+Resources:
+
+  myVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/24
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      Tags:
+        - Key: Name
+          Value: Amalia VPC
+
+  myInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: My Internet Gateway
+
+  myRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVPC
+      Tags:
+      - Key: Name
+        Value: my Route Table
+  
+  myRoute:
+    Type: AWS::EC2::Route
+    DependsOn: myInternetGateway
+    Properties:
+      RouteTableId:
+        Ref: myRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: myInternetGateway
+  
+  VPCGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      InternetGatewayId: 
+        Ref: myInternetGateway
+      VpcId: 
+        Ref: myVPC
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVPC
+      CidrBlock: 10.0.0.0/25
+      AvailabilityZone: "eu-west-2a"
+      Tags:
+      - Key: Name
+        Value: Amalia public subnet
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVPC
+      CidrBlock: 10.0.0.128/25
+      AvailabilityZone: "eu-west-2b"
+      Tags:
+      - Key: Name
+        Value: Amalia private subnet
+
+  theSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: 
+        Ref: myRouteTable
+      SubnetId: 
+        Ref: PublicSubnet
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http and ssh
+      VpcId: 
+        Ref: myVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+Outputs:
+  SecurityGroupId:
+    Description: Security Group Id 
+    Value: !GetAtt InstanceSecurityGroup.GroupId 
+    Export:
+      Name: !Sub "${AWS::StackName}-SecurityGroupIds"
+  
+#  Ec2Instance:
+#    Type: 'AWS::EC2::Instance'
+#    Properties:
+#      InstanceType: t2.small
+#      AvailabilityZone: "eu-west-2a" 
+#      ImageId: ami-084e8c05825742534
+#      KeyName: !Ref myKeyPair
+#      SubnetId:
+#        Ref: "PublicSubnet"
+#      UserData:
+#        Fn::Base64:
+#          !Sub |
+#            #!/bin/bash
+#            # Install the Docker Engine Container Runtime 
+#            sudo apt-get update
+#            sudo apt-get install ca-certificates curl gnupg lsb-release 
+#            sudo mkdir -p /etc/apt/keyrings
+#            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+#            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+#            sudo apt-get update
+#            sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+#  ElasticIP:
+#    Type: 'AWS::EC2::EIP'
+#    Properties:
+#      Domain: VPC
+#      InstanceId: !Ref Ec2Instance
