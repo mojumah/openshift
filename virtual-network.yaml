@@ -97,11 +97,13 @@ Resources:
           CidrIp: 0.0.0.0/0
 
 Outputs:
+
   PublicSubnet:
-    Description: The Public Subnet VpcId
-    Vaule: !GetAtt PublicSubnet.SubnetId
+    Description: The subnet ID to use for public web servers
+    Value: !Ref PublicSubnet
     Export:
-      Name: !Sub "${AWS::StackName}-SubnetId"
+      Name: !Sub "${AWS::StackName}-PublicSubnet"
+
 
   SecurityGroupId:
     Description: Security Group Id 
