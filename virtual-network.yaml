@@ -58,7 +58,7 @@ Resources:
       AvailabilityZone: "eu-west-2a"
       Tags:
       - Key: Name
-        Value: Amalia public subnet
+        Value: public subnet
 
   PrivateSubnet:
     Type: AWS::EC2::Subnet
@@ -69,7 +69,7 @@ Resources:
       AvailabilityZone: "eu-west-2b"
       Tags:
       - Key: Name
-        Value: Amalia private subnet
+        Value: private subnet
 
   theSubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -97,17 +97,17 @@ Resources:
           CidrIp: 0.0.0.0/0
 
 Outputs:
+  PublicSubnet:
+    Description: The Public Subnet VpcId
+    Vaule: !GetAtt PublicSubnet.SubnetId
+    Export:
+      Name: !Sub "${AWS::StackName}-SubnetId"
+
   SecurityGroupId:
     Description: Security Group Id 
     Value: !GetAtt InstanceSecurityGroup.GroupId 
     Export:
       Name: !Sub "${AWS::StackName}-SecurityGroupIds"
-Outputs:
-  SubnetId:
-    Description: The Public Subnet VpcId
-    Vaule: !GetAtt PublicSubnet.SubnetId
-    Export:
-      Name: !Sub "${AWS::StackName}-SubnetId"
   
 #  Ec2Instance:
 #    Type: 'AWS::EC2::Instance'
