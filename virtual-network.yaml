@@ -8,7 +8,7 @@ Resources:
       EnableDnsHostnames: 'true'
       Tags:
         - Key: Name
-          Value: Amalia VPC
+          Value: Website vpc
 
   myInternetGateway:
     Type: AWS::EC2::InternetGateway
