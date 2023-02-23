@@ -6,9 +6,11 @@ on:
 
 jobs:
   deploy:
+    name: deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/checkout@v1
 
 
     - name: configure AWS creds
