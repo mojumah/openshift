@@ -34,7 +34,7 @@ Resources:
              find /var/www -type f -exec sudo chmod 0664 {} \;
              pwd
              date
-             ls -la
+             ls -lt
 
   ElasticIP:
     Type: 'AWS::EC2::EIP'
