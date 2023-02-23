@@ -1,0 +1,22 @@
+jobs:
+  deploy:
+    name: deploy cloudformation stack
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials from Test account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::423261455848:role/my-github-actions-role
+        
+        aws-region: eu-west-2
+
+    - name: Copy files to the test website with the AWS CLI
+      run: |
+        aws cloudformation create-stack --stack-name virtual-network --template-body file://virtual-network.yaml
